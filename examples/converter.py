@@ -2,9 +2,9 @@ import argparse
 import psd_to_usd.convert as convert
 import logging
 
-parser = argparse.ArgumentParser(description='Convert PSD to USD')
-parser.add_argument('input', type=str, help='Path to PSD input file')
-parser.add_argument('output', type=str, help='Path for USD output file')
+parser = argparse.ArgumentParser(description="Convert PSD to USD")
+parser.add_argument("input", type=str, help="Path to PSD input file")
+parser.add_argument("output", type=str, help="Path for USD output file")
 
 # parser.add_argument('working_dir', type=str, help='Path for ' default=None)
 

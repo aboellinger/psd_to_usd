@@ -8,6 +8,7 @@ from pxr import Usd, UsdGeom, Tf
 from .converter import utils, layer
 from .converter import conversion_context, conversion_options
 
+
 def convert(psd_path, usd_path):
 
     output_usd_path = usd_path
@@ -39,17 +40,17 @@ def convert(psd_path, usd_path):
     usd_stage = Usd.Stage.CreateInMemory()
 
     psd = PSDImage.open(psd_path)
-    if conversion_options['output_combined']:
+    if conversion_options["output_combined"]:
         psd.composite().save(os.path.join(tex_dir, utils.make_image_path("combined")))
 
     conversion_context["canvas_size"] = psd.size
 
     for _layer in psd:
-        layer_image = _layer.composite()        
-        
+        layer_image = _layer.composite()
+
         _img_path = os.path.join(tex_dir, utils.make_image_path(_layer.name))
-        
-        if conversion_options['use_absolute_paths']:
+
+        if conversion_options["use_absolute_paths"]:
             _img_path = os.path.abspath(_img_path)
 
         layer_image.save(_img_path)
@@ -59,8 +60,6 @@ def convert(psd_path, usd_path):
         layer.convert(usd_stage, _path, _img_path, _layer)
 
     usd_stage.Export(output_usd_path)
-
-
 
     if is_usdz:
         # Zip usd
