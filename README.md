@@ -7,3 +7,11 @@ PSD (Photoshop Document) converter to USD (Universal Scene Description)
 
 ## TODO
 * opacityThreshold for text
+
+
+## Development
+
+You can clone this repo and install it into your development virtualenv with:
+```bash
+pip install -e .
+```
