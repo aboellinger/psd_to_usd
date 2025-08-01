@@ -57,7 +57,8 @@ def convert(usd_stage, prim_path, image_path, psd_layer):
 
     usd_image_path = image_path
 
-    usd_geom.CreatePrimvar(
+    primvar_api = UsdGeom.PrimvarsAPI(usd_geom.GetPrim())
+    primvar_api.CreatePrimvar(
         "st", Sdf.ValueTypeNames.TexCoord2fArray, UsdGeom.Tokens.varying
     ).Set(usd_uvs)
 
