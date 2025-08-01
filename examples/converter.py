@@ -13,9 +13,9 @@ args = parser.parse_args()
 _input = args.input
 _output = args.output
 
-# logging.basicConfig(format='%(levelname)s:\t%(message)s', level=logging.DEBUG)
-# logging.info("Converting PSD to USD")
-# logging.info(f" - input: {_input}")
-# logging.info(f" - output: {_output}")
+logging.basicConfig(format="%(levelname)s:\t%(message)s", level=logging.DEBUG)
+logging.info("Converting PSD to USD")
+logging.info(f" - input: {_input}")
+logging.info(f" - output: {_output}")
 
 convert.convert(_input, _output)

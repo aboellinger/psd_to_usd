@@ -8,13 +8,17 @@ from pxr import Usd, UsdGeom, Tf
 from .converter import utils, layer
 from .converter import conversion_context, conversion_options
 
+import logging
+
+LOG = logging.getLogger(__name__)
+
 
 def convert(psd_path, usd_path):
 
     output_usd_path = usd_path
 
     is_usdz = False
-    if "usdz" in usd_path:
+    if "usdz" in usd_path:  # TODO: Check only extension ?
         is_usdz = True
         output_usd_path = output_usd_path[:-1]
 
@@ -31,11 +35,7 @@ def convert(psd_path, usd_path):
     conversion_context["working_dir"] = working_dir
 
     tex_dir = os.path.join(working_dir, "tex")
-
-    try:
-        os.makedirs(tex_dir)
-    except:
-        pass
+    os.makedirs(tex_dir, exist_ok=True)
 
     usd_stage = Usd.Stage.CreateInMemory()
 
