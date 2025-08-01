@@ -1,7 +1,10 @@
 from psd_tools import PSDImage
 
+
+import re
 import os
-import tempfile, shutil
+import tempfile
+import shutil
 
 from pxr import Usd, UsdGeom, Tf
 
@@ -46,16 +49,21 @@ def convert(psd_path, usd_path):
     conversion_context["canvas_size"] = psd.size
 
     for _layer in psd:
+        LOG.debug(f"Export layer {_layer!r}")
+
+        slug = slugify(_layer.name)
+        LOG.debug(f"  slug: {slug!r}")
+
         layer_image = _layer.composite()
 
-        _img_path = os.path.join(tex_dir, utils.make_image_path(_layer.name))
+        _img_path = os.path.join(tex_dir, utils.make_image_path(slug))
 
         if conversion_options["use_absolute_paths"]:
             _img_path = os.path.abspath(_img_path)
 
         layer_image.save(_img_path)
 
-        _path = "/" + Tf.MakeValidIdentifier(_layer.name)
+        _path = "/" + Tf.MakeValidIdentifier(slug)
 
         layer.convert(usd_stage, _path, _img_path, _layer)
 
@@ -70,3 +78,18 @@ def convert(psd_path, usd_path):
             shutil.rmtree(working_dir)
         except OSError as e:
             print("Error: {} : {}".format(working_dir, e.strerror))
+
+
+def slugify(text):
+    # based on:
+    # https://medium.com/@ryan_forrester_/remove-special-characters-from-strings-in-python-complete-guide-53651c8163d9
+
+    # Convert to lowercase and replace spaces with hyphens
+    slug = text.lower().strip()
+    # Remove special characters
+    slug = re.sub(r"[^a-z0-9\s-]", "", slug)
+    # Replace spaces with hyphens
+    slug = re.sub(r"\s+", "-", slug)
+    # Remove multiple hyphens
+    slug = re.sub(r"-+", "-", slug)
+    return slug
